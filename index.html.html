@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GKD Tech LLP — Enabling Next-Generation Technology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --black:#020508;--deep:#040c14;--navy:#06111f;--panel:#091827;--card:#0c2038;
+  --cyan:#00e5ff;--cyan-dim:#00b8cc;--cyan-glow:rgba(0,229,255,.18);
+  --gold:#ffb800;--gold-dim:rgba(255,184,0,.15);
+  --white:#e0ecf8;--grey:#5a7a99;
+  --border:rgba(0,229,255,.12);--border-gold:rgba(255,184,0,.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Rajdhani',sans-serif;font-weight:400;overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--cyan-dim);border-radius:2px}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.4}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:72px;background:rgba(2,5,8,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:height .3s,background .3s}
+nav.scrolled{height:60px;background:rgba(2,5,8,.97)}
+.nav-brand{display:flex;align-items:center;gap:14px}
+.nav-hex{width:40px;height:40px;background:linear-gradient(135deg,#0070cc,var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:10px;font-weight:900;color:var(--black);animation:hexGlow 3s ease-in-out infinite}
+@keyframes hexGlow{0%,100%{filter:drop-shadow(0 0 6px var(--cyan))}50%{filter:drop-shadow(0 0 20px var(--cyan))}}
+.nav-name{font-family:'Orbitron',monospace;font-weight:700;font-size:14px;letter-spacing:.18em;color:var(--white)}
+.nav-name b{color:var(--cyan)}
+.nav-links{display:flex;gap:38px;list-style:none}
+.nav-links a{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform .25s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 26px;border:1px solid var(--cyan);font-family:'Orbitron',monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);background:transparent;cursor:pointer;transition:all .25s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.nav-btn:hover{background:var(--cyan);color:var(--black);box-shadow:0 0 28px var(--cyan-glow)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 60px 80px;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,255,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.032) 1px,transparent 1px);background-size:64px 64px;animation:gridMove 20s linear infinite}
+@keyframes gridMove{0%{transform:translateY(0)}100%{transform:translateY(64px)}}
+.glow-l{position:absolute;top:-20%;left:-15%;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(0,112,200,.22),transparent 65%);filter:blur(70px);animation:floatL 14s ease-in-out infinite}
+.glow-r{position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,184,0,.12),transparent 65%);filter:blur(70px);animation:floatR 18s ease-in-out infinite}
+@keyframes floatL{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,-60px)}}
+@keyframes floatR{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,50px)}}
+.hero-content{position:relative;z-index:2;max-width:860px}
+.hero-pill{display:inline-flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:32px;border:1px solid var(--border);padding:8px 20px;background:rgba(0,229,255,.05)}
+.pill-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:blinkDot 2s ease-in-out infinite}
+@keyframes blinkDot{0%,100%{opacity:1;box-shadow:0 0 0 0 var(--cyan)}50%{opacity:.25;box-shadow:0 0 12px 5px var(--cyan)}}
+h1.hero-h1{font-family:'Orbitron',monospace;font-size:clamp(36px,6vw,82px);font-weight:900;line-height:1.03;letter-spacing:-.025em;margin-bottom:26px}
+.h1-cyan{display:block;background:linear-gradient(90deg,var(--cyan),#0090ff,var(--cyan));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+.h1-gold{color:var(--gold);-webkit-text-fill-color:var(--gold)}
+.hero-desc{font-size:18px;font-weight:400;color:var(--grey);line-height:1.75;max-width:620px;margin-bottom:48px}
+.hero-desc strong{color:var(--white);font-weight:600}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:72px}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;background:linear-gradient(135deg,#0070cc,var(--cyan));border:none;cursor:pointer;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--black);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));transition:all .3s}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(0,229,255,.35)}
+.btn-ghost{display:inline-flex;align-items:center;gap:10px;padding:15px 44px;border:1px solid rgba(255,255,255,.18);font-family:'Orbitron',monospace;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--white);background:transparent;cursor:pointer;transition:all .3s}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.arr{transition:transform .2s}
+.btn-primary:hover .arr,.btn-ghost:hover .arr{transform:translateX(5px)}
+.hero-stats{display:flex;gap:0;border-top:1px solid var(--border);padding-top:44px}
+.hs{flex:1;padding-right:40px;border-right:1px solid var(--border);margin-right:40px}
+.hs:last-child{border-right:none;margin-right:0;padding-right:0}
+.hs-num{font-family:'Orbitron',monospace;font-size:40px;font-weight:900;color:var(--cyan);line-height:1;margin-bottom:7px}
+.hs-num.gold{color:var(--gold)}
+.hs-lbl{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+
+/* SECTIONS */
+section{padding:110px 60px;position:relative}
+.eyebrow{display:flex;align-items:center;gap:12px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+.eyebrow::before{content:'';width:36px;height:1px;background:var(--cyan);flex-shrink:0}
+.sh{font-family:'Orbitron',monospace;font-size:clamp(26px,3.8vw,50px);font-weight:800;line-height:1.1;letter-spacing:-.01em;margin-bottom:18px}
+.sh em{color:var(--cyan);font-style:normal}
+.sh .sg{color:var(--gold)}
+.slead{font-size:17px;color:var(--grey);line-height:1.75;max-width:580px}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.reveal.up{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* ABOUT */
+.about{background:var(--deep)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:64px}
+.about-vis{position:relative;height:480px}
+.ring{position:absolute;border-radius:50%;border:1px solid var(--border);top:50%;left:50%;transform:translate(-50%,-50%);animation:rPulse 5s ease-in-out infinite}
+@keyframes rPulse{0%,100%{opacity:.7}50%{opacity:.2}}
+.r1{width:90px;height:90px}.r2{width:170px;height:170px;animation-delay:.4s}.r3{width:260px;height:260px;animation-delay:.8s}.r4{width:360px;height:360px;animation-delay:1.2s}.r5{width:460px;height:460px;animation-delay:1.6s;opacity:.25}
+.sweep{position:absolute;top:50%;left:50%;width:230px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan));transform-origin:left center;animation:sweepAnim 4.5s linear infinite;opacity:.65}
+@keyframes sweepAnim{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.orb-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:58px;height:58px;background:linear-gradient(135deg,#0070cc,var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-weight:900;font-size:10px;color:var(--black);z-index:2;filter:drop-shadow(0 0 18px var(--cyan))}
+.odot{position:absolute;border-radius:50%;top:50%;left:50%;filter:drop-shadow(0 0 6px var(--cyan))}
+.od1{width:10px;height:10px;margin:-5px;background:var(--cyan);animation:orb1 7s linear infinite}
+.od2{width:9px;height:9px;margin:-4.5px;background:var(--cyan);animation:orb2 10s linear infinite}
+.od3{width:10px;height:10px;margin:-5px;background:var(--gold);filter:drop-shadow(0 0 6px var(--gold));animation:orb3 8s linear infinite}
+.od4{width:8px;height:8px;margin:-4px;background:var(--cyan);animation:orb4 12s linear infinite}
+@keyframes orb1{0%{transform:rotate(0deg) translateX(85px) rotate(0deg)}100%{transform:rotate(360deg) translateX(85px) rotate(-360deg)}}
+@keyframes orb2{0%{transform:rotate(60deg) translateX(130px) rotate(-60deg)}100%{transform:rotate(420deg) translateX(130px) rotate(-420deg)}}
+@keyframes orb3{0%{transform:rotate(180deg) translateX(180px) rotate(-180deg)}100%{transform:rotate(540deg) translateX(180px) rotate(-540deg)}}
+@keyframes orb4{0%{transform:rotate(290deg) translateX(228px) rotate(-290deg)}100%{transform:rotate(650deg) translateX(228px) rotate(-650deg)}}
+.pillars{display:flex;flex-direction:column;gap:18px;margin-top:38px}
+.pillar{display:flex;gap:18px;align-items:flex-start;padding:22px 24px;border:1px solid var(--border);background:rgba(9,24,39,.6);transition:border-color .25s,background .25s;cursor:default}
+.pillar:hover{border-color:rgba(0,229,255,.35);background:rgba(12,32,56,.9)}
+.p-icon{width:46px;height:46px;flex-shrink:0;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.25);display:flex;align-items:center;justify-content:center;font-size:22px}
+.pillar h4{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:5px;color:var(--white)}
+.pillar p{font-size:14px;color:var(--grey);line-height:1.6}
+
+/* ECOSYSTEM */
+.ecosystem{background:var(--black)}
+.eco-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:24px}
+.eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+.eco-card{background:var(--panel);padding:44px 36px;position:relative;overflow:hidden;transition:background .3s,transform .3s;cursor:default}
+.eco-card:hover{background:var(--card);transform:translateY(-5px);z-index:2}
+.eco-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),transparent);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.eco-card:hover::after{transform:scaleX(1)}
+.eco-wide{grid-column:span 2}
+.eco-num{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--grey);margin-bottom:22px}
+.eco-ico{font-size:40px;margin-bottom:20px;display:block;line-height:1}
+.eco-title{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;margin-bottom:12px;color:var(--white);line-height:1.25;letter-spacing:.04em}
+.eco-desc{font-size:14px;color:var(--grey);line-height:1.7;margin-bottom:24px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:4px 11px;border:1px solid rgba(0,229,255,.22);color:var(--cyan-dim)}
+.tag-gold{border-color:rgba(255,184,0,.3);color:var(--gold)}
+
+/* FXUAV */
+.fxuav{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.fxuav-wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:64px}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 32px}
+.badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;font-weight:600}
+.b-patent{background:rgba(255,184,0,.12);border:1px solid rgba(255,184,0,.4);color:var(--gold)}
+.b-dgca{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.35);color:var(--cyan)}
+.b-enc{background:rgba(0,200,80,.1);border:1px solid rgba(0,200,80,.3);color:#00c864}
+.feats{display:flex;flex-direction:column;gap:14px}
+.feat{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border:1px solid var(--border);background:rgba(9,24,39,.5);transition:border-color .2s,background .2s}
+.feat:hover{border-color:rgba(0,229,255,.3);background:rgba(12,32,56,.7)}
+.feat-ico{width:42px;height:42px;flex-shrink:0;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.feat h4{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--cyan);margin-bottom:5px;text-transform:uppercase}
+.feat p{font-size:13px;color:var(--grey);line-height:1.6}
+.flow-panel{background:var(--panel);border:1px solid var(--border);padding:36px;position:relative}
+.flow-head{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);margin-bottom:28px}
+.fn{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border:1px solid var(--border);margin-bottom:4px;transition:border-color .2s}
+.fn.active{border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.06)}
+.fn.active .fn-lbl{color:var(--cyan)}
+.fn-ico{font-size:20px;flex-shrink:0}
+.fn-lbl{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:14px;color:var(--white)}
+.fn-sub{font-size:11px;color:var(--grey)}
+.fn-st{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.1em}
+.fn-st.ok{color:#00c864}
+.fn-st.tx{color:var(--gold);animation:blinkDot 1.4s ease-in-out infinite}
+.farrow{text-align:center;color:var(--cyan);font-size:13px;padding:3px 0;opacity:.55}
+.flow-foot{margin-top:22px;padding-top:20px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fstat{padding:14px;background:rgba(0,229,255,.05);border:1px solid var(--border);text-align:center}
+.fstat-val{font-family:'Orbitron',monospace;font-size:22px;font-weight:800;color:var(--cyan);margin-bottom:4px}
+.fstat-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--grey)}
+
+/* CYBER */
+.cyber{background:var(--black)}
+.cyber-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:56px}
+.cc{padding:30px 22px;border:1px solid var(--border);background:var(--panel);transition:all .25s;cursor:default;position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),#0070cc);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.cc:hover::before{transform:scaleX(1)}
+.cc:hover{border-color:rgba(0,229,255,.3);background:var(--card)}
+.cc-ico{font-size:30px;margin-bottom:16px;display:block}
+.cc-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+.cc-text{font-size:13px;color:var(--grey);line-height:1.65}
+.cyber-banner{margin-top:48px;padding:40px 48px;background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(0,112,200,.04));border:1px solid rgba(0,229,255,.18);display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px}
+.cb-h{font-family:'Orbitron',monospace;font-size:20px;font-weight:800;margin-bottom:8px}
+.cb-p{font-size:15px;color:var(--grey);line-height:1.65}
+
+/* TRAINING */
+.training{background:var(--deep)}
+.training-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:80px;margin-top:64px;align-items:start}
+.prog{border:1px solid var(--border-gold);background:var(--panel);padding:30px;margin-bottom:16px;position:relative;transition:all .25s;cursor:default}
+.prog::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.prog:hover{border-color:rgba(255,184,0,.4);background:var(--card)}
+.prog-lvl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.prog-title{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;margin-bottom:10px}
+.prog-desc{font-size:14px;color:var(--grey);line-height:1.6}
+.t-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.tstat{background:var(--panel);border:1px solid var(--border-gold);padding:22px;text-align:center}
+.tstat-num{font-family:'Orbitron',monospace;font-size:30px;font-weight:900;color:var(--gold);margin-bottom:5px}
+.tstat-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.cert-block{display:flex;align-items:center;gap:20px;background:linear-gradient(135deg,rgba(255,184,0,.06),rgba(255,184,0,.02));border:1px solid rgba(255,184,0,.22);padding:26px;margin-bottom:22px}
+.cert-seal{width:64px;height:64px;flex-shrink:0;background:rgba(255,184,0,.12);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px}
+.cert-block h4{font-family:'Orbitron',monospace;font-size:13px;color:var(--gold);margin-bottom:6px;letter-spacing:.05em}
+.cert-block p{font-size:13px;color:var(--grey);line-height:1.55}
+.curricula{background:var(--panel);border:1px solid var(--border);padding:26px}
+.curr-h{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);margin-bottom:18px}
+.curr-list{display:flex;flex-direction:column;gap:12px}
+.curr-item{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--grey)}
+.curr-item::before{content:'▸';color:var(--cyan);font-size:11px;flex-shrink:0}
+
+/* CONTACT */
+.contact{background:var(--black)}
+.contact-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;margin-top:64px;align-items:start}
+.ci-block{display:flex;align-items:flex-start;gap:18px;padding:24px 0;border-bottom:1px solid var(--border)}
+.ci-block:first-child{padding-top:0}
+.ci-block:last-child{border-bottom:none}
+.ci-ico{width:48px;height:48px;flex-shrink:0;border:1px solid var(--border);background:rgba(0,229,255,.06);display:flex;align-items:center;justify-content:center;font-size:20px}
+.ci-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px}
+.ci-val{font-size:15px;color:var(--white);font-weight:500;line-height:1.5}
+.ci-val a{color:var(--cyan);transition:opacity .2s}
+.ci-val a:hover{opacity:.7}
+.ff{margin-bottom:17px}
+.fl{display:block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+.fi,.ft,.fs{width:100%;background:var(--panel);border:1px solid var(--border);padding:14px 18px;color:var(--white);font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color .2s}
+.fi::placeholder,.ft::placeholder{color:var(--grey)}
+.fi:focus,.ft:focus,.fs:focus{border-color:var(--cyan)}
+.ft{height:130px;resize:vertical}
+.fs{appearance:none;cursor:pointer}
+.fs option{background:var(--panel)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* FOOTER */
+footer{background:var(--deep);border-top:1px solid var(--border);padding:72px 60px 44px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:56px;padding-bottom:56px;border-bottom:1px solid var(--border)}
+.fbrand-p{font-size:14px;color:var(--grey);line-height:1.7;margin-top:18px;max-width:280px}
+.fcol-h{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white);margin-bottom:22px}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:12px}
+.flinks a{font-size:14px;color:var(--grey);transition:color .2s;display:flex;align-items:center;gap:6px}
+.flinks a:hover{color:var(--cyan)}
+.flinks a::before{content:'›';opacity:0;transition:opacity .2s;color:var(--cyan)}
+.flinks a:hover::before{opacity:1}
+.footer-btm{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.fcopy{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--grey)}
+.fcopy span{color:var(--cyan)}
+
+@media(max-width:1024px){
+  nav{padding:0 24px}.nav-links{gap:24px}
+  section{padding:80px 28px}.hero{padding:100px 28px 70px}
+  .about-grid,.fxuav-wrap,.training-wrap,.contact-wrap{grid-template-columns:1fr;gap:48px}
+  .about-vis{height:340px}
+  .eco-grid{grid-template-columns:1fr 1fr}.eco-wide{grid-column:span 2}
+  .cyber-grid{grid-template-columns:1fr 1fr}
+  .cyber-banner{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
+}
+@media(max-width:680px){
+  .nav-links{display:none}
+  section{padding:64px 20px}.hero{padding:88px 20px 56px}
+  .hero-stats{flex-direction:column;gap:20px}
+  .hs{border-right:none;margin-right:0;padding-right:0;padding-bottom:20px;border-bottom:1px solid var(--border)}
+  .hs:last-child{border-bottom:none;padding-bottom:0}
+  .eco-grid{grid-template-columns:1fr;background:transparent;gap:10px}.eco-wide{grid-column:span 1}
+  .cyber-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  footer{padding:56px 20px 36px}.footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- ── NAV ────────────────────────── -->
+<nav id="nav">
+  <div class="nav-brand">
+    <div class="nav-hex">GKD</div>
+    <div class="nav-name">GKD <b>TECH</b> LLP</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#ecosystem">Ecosystem</a></li>
+    <li><a href="#fxuav">FxUAV</a></li>
+    <li><a href="#cybersec">Cybersec</a></li>
+    <li><a href="#training">Training</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Get in Touch &rsaquo;</a>
+</nav>
+
+<!-- ── HERO ───────────────────────── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="glow-l"></div>
+  <div class="glow-r"></div>
+  <div class="hero-content">
+    <div class="hero-pill reveal"><div class="pill-dot"></div>New Delhi &nbsp;·&nbsp; Deep-Tech Incubator &nbsp;·&nbsp; Est. 2024</div>
+    <h1 class="hero-h1 reveal d1">
+      Enabling the<br>
+      <span class="h1-cyan">Next-Generation</span>
+      of <span class="h1-gold">Secure</span> Technology
+    </h1>
+    <p class="hero-desc reveal d2">
+      GKD Tech LLP incubates <strong>transformative ventures</strong> across Cybersecurity, Aerospace, Immersive Systems, and AI-driven intelligence — building a smarter, safer India from the ground up.
+    </p>
+    <div class="hero-btns reveal d3">
+      <a href="#ecosystem" class="btn-primary">Explore Ecosystem <span class="arr">→</span></a>
+      <a href="#contact" class="btn-ghost">Partner With Us <span class="arr">→</span></a>
+    </div>
+    <div class="hero-stats reveal d4">
+      <div class="hs">
+        <div class="hs-num" id="cnt1">5+</div>
+        <div class="hs-lbl">Incubated Ventures</div>
+      </div>
+      <div class="hs">
+        <div class="hs-num gold">1st</div>
+        <div class="hs-lbl">Patent Filed · FxUAV</div>
+      </div>
+      <div class="hs">
+        <div class="hs-num">DGCA</div>
+        <div class="hs-lbl">Certified Training</div>
+      </div>
+      <div class="hs">
+        <div class="hs-num">360°</div>
+        <div class="hs-lbl">Defense Tech Coverage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────── -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-vis reveal">
+      <div class="ring r5"></div><div class="ring r4"></div><div class="ring r3"></div><div class="ring r2"></div><div class="ring r1"></div>
+      <div class="sweep"></div>
+      <div class="odot od1"></div>
+      <div class="odot od2"></div>
+      <div class="odot od3"></div>
+      <div class="odot od4"></div>
+      <div class="orb-center">GKD</div>
+    </div>
+    <div class="reveal d1">
+      <div class="eyebrow">Who We Are</div>
+      <h2 class="sh">Built to <em>Disrupt</em>.<br>Designed to <span class="sg">Defend</span>.</h2>
+      <p class="slead">GKD Tech LLP is a dynamic deep-tech startup architect — incubating, funding, and accelerating ventures that solve India's most pressing security, defense, and intelligence challenges. We don't just build companies; we build sovereign technology ecosystems.</p>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="p-icon">🔭</div>
+          <div>
+            <h4>Vision-First Incubation</h4>
+            <p>We co-create technology roadmaps aligned with India's defense and digital sovereignty goals — from concept to market-ready product.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="p-icon">🤝</div>
+          <div>
+            <h4>Synergistic Ecosystem</h4>
+            <p>Each portfolio venture is designed to interoperate — creating a defense-tech ecosystem far greater than the sum of its parts.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="p-icon">🇮🇳</div>
+          <div>
+            <h4>Made in India. Built for the World.</h4>
+            <p>Indigenous engineering meeting global competitive standards, fully aligned with Atmanirbhar Bharat and Make in India principles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ECOSYSTEM ──────────────────── -->
+<section class="ecosystem" id="ecosystem">
+  <div class="eco-top reveal">
+    <div>
+      <div class="eyebrow">Portfolio</div>
+      <h2 class="sh">The GKD <em>Ecosystem</em></h2>
+    </div>
+    <p class="slead" style="max-width:340px">Five deep-tech ventures — one unified mission to secure and advance India's technological frontier.</p>
+  </div>
+  <div class="eco-grid reveal d1">
+
+    <div class="eco-card eco-wide">
+      <div class="eco-num">01 / AEROSPACE &amp; UAV</div>
+      <span class="eco-ico">✈️</span>
+      <div class="eco-title">Homeland Aero Pvt Ltd</div>
+      <div class="eco-desc">Advanced UAV platforms, AI-driven surveillance drones, and indigenously engineered aerospace systems purpose-built for India's defense, border security, agricultural, and industrial operations. Every platform is designed, assembled, and tested domestically — ensuring supply chain sovereignty and rapid mission-specific customisation.</div>
+      <div class="tags"><span class="tag">Advanced UAVs</span><span class="tag">AI Surveillance</span><span class="tag">Border Security</span><span class="tag">Indigenous Build</span><span class="tag">Aerospace Platforms</span></div>
+    </div>
+
+    <div class="eco-card">
+      <div class="eco-num">02 / IMMERSIVE SYSTEMS</div>
+      <span class="eco-ico">🥽</span>
+      <div class="eco-title">Tactix Technologies</div>
+      <div class="eco-desc">AR/VR/MR immersive systems for defense training, battlefield simulation, and tactical rehearsal — reducing costs, eliminating live risks, and dramatically improving combat readiness before actual deployment.</div>
+      <div class="tags"><span class="tag">AR / VR / MR</span><span class="tag">Defense Simulation</span><span class="tag">Tactical Training</span></div>
+    </div>
+
+    <div class="eco-card">
+      <div class="eco-num">03 / AI &amp; INTELLIGENCE</div>
+      <span class="eco-ico">🧠</span>
+      <div class="eco-title">SAMVAD</div>
+      <div class="eco-desc">AI-powered multilingual OCR, digitization, and translation platform built for intelligence agencies — enabling rapid processing of intercepts and classified documents across 30+ languages at scale.</div>
+      <div class="tags"><span class="tag">AI · OCR</span><span class="tag">NLP · 30+ Languages</span><span class="tag">Intel Agencies</span></div>
+    </div>
+
+    <div class="eco-card">
+      <div class="eco-num">04 / CONNECTIVITY</div>
+      <span class="eco-ico">📡</span>
+      <div class="eco-title">Tactilink Systems Pvt Ltd</div>
+      <div class="eco-desc">Deep-tech wireless connectivity — 5G NR, MANET SDR, and private LTE — engineered for mission-critical military and public safety operations where commercial networks fail, are jammed, or compromised.</div>
+      <div class="tags"><span class="tag">5G NR</span><span class="tag">MANET SDR</span><span class="tag">Private LTE</span></div>
+    </div>
+
+    <div class="eco-card">
+      <div class="eco-num">05 / DRONE SAFETY</div>
+      <span class="eco-ico">🔐</span>
+      <div class="eco-title">FX UAV</div>
+      <div class="eco-desc">Patented hardware module ensuring only DGCA-licensed pilots can power and operate drones — with real-time GNSS tracking, RFID/NFC authentication, AES encryption, and a handheld field verification device for enforcement authorities.</div>
+      <div class="tags"><span class="tag tag-gold">Patent Pending</span><span class="tag">RFID / NFC Auth</span><span class="tag">GNSS Tracking</span><span class="tag">AES Encrypted</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FXUAV ──────────────────────── -->
+<section class="fxuav" id="fxuav">
+  <div class="reveal">
+    <div class="eyebrow">Innovation Spotlight</div>
+    <h2 class="sh">FxUAV <em>Verification</em> Module</h2>
+    <p class="slead">A world-first patented hardware invention that prevents unauthorized drone operation at the power level — not just software.</p>
+  </div>
+  <div class="fxuav-wrap">
+    <div class="reveal d1">
+      <div class="badges">
+        <span class="badge b-patent">⬡ Patent Pending</span>
+        <span class="badge b-dgca">✓ DGCA Compliant</span>
+        <span class="badge b-enc">🔒 AES Encrypted</span>
+      </div>
+      <div class="feats">
+        <div class="feat">
+          <div class="feat-ico">🪪</div>
+          <div>
+            <h4>RFID / NFC Pilot Authentication</h4>
+            <p>Drones can only be powered on after a certified DGCA license card is scanned and verified. Invalid credentials means zero power — and works fully offline in remote locations.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🛰️</div>
+          <div>
+            <h4>Real-Time GNSS Tracking</h4>
+            <p>Continuous broadcast of GPS coordinates, altitude, UIN, and pilot license number via cellular network to a live regulatory web dashboard.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🔐</div>
+          <div>
+            <h4>Dual-Method AES Encryption</h4>
+            <p>Military-grade AES encryption with data-pattern decoding ensures credential integrity and prevents microcontroller tampering via cellular channels.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">📲</div>
+          <div>
+            <h4>Handheld Field Verification Device</h4>
+            <p>Portable device enabling police and traffic authorities to verify pilot RFID cards and module integrity on-site without internet connectivity.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🌐</div>
+          <div>
+            <h4>Live Web Monitoring Dashboard</h4>
+            <p>Real-time map of all active drones with drill-down flight data. Last known position archived on power loss for forensic review.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="flow-panel">
+        <div class="flow-head">// FXUAV OPERATIONAL FLOW</div>
+        <div class="fn"><div class="fn-ico">🧑‍✈️</div><div><div class="fn-lbl">Pilot Approaches Drone</div><div class="fn-sub">DGCA License Card in hand</div></div><div class="fn-st ok">READY</div></div>
+        <div class="farrow">↓</div>
+        <div class="fn active"><div class="fn-ico">🪪</div><div><div class="fn-lbl">RFID / NFC Authentication</div><div class="fn-sub">Credentials verified via AES decrypt</div></div><div class="fn-st tx">VERIFY</div></div>
+        <div class="farrow">↓</div>
+        <div class="fn"><div class="fn-ico">⚡</div><div><div class="fn-lbl">Power Transmission Enabled</div><div class="fn-sub">Battery → Power Distribution Board</div></div><div class="fn-st ok">ACTIVE</div></div>
+        <div class="farrow">↓</div>
+        <div class="fn active"><div class="fn-ico">🛰️</div><div><div class="fn-lbl">GNSS + Cellular Broadcast</div><div class="fn-sub">Real-time position · altitude · UIN</div></div><div class="fn-st tx">LIVE TX</div></div>
+        <div class="farrow">↓</div>
+        <div class="fn"><div class="fn-ico">🌐</div><div><div class="fn-lbl">Web Dashboard Updated</div><div class="fn-sub">Regulatory authorities monitor live</div></div><div class="fn-st ok">ONLINE</div></div>
+        <div class="flow-foot">
+          <div class="fstat"><div class="fstat-val">AES</div><div class="fstat-lbl">Encryption Standard</div></div>
+          <div class="fstat"><div class="fstat-val">360°</div><div class="fstat-lbl">Use Case Coverage</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CYBERSECURITY ───────────────── -->
+<section class="cyber" id="cybersec">
+  <div class="reveal">
+    <div class="eyebrow">Cybersecurity</div>
+    <h2 class="sh">Protecting <em>Critical</em> Infrastructure</h2>
+    <p class="slead">End-to-end cybersecurity for enterprise, defense, and critical national infrastructure — powered by AI-driven threat intelligence and real-time risk analytics.</p>
+  </div>
+  <div class="cyber-grid reveal d1">
+    <div class="cc"><span class="cc-ico">🛡️</span><div class="cc-title">Network Security</div><div class="cc-text">Multi-layer protection against advanced persistent threats, zero-day exploits, and state-sponsored intrusions across all network layers.</div></div>
+    <div class="cc"><span class="cc-ico">📱</span><div class="cc-title">Application Security</div><div class="cc-text">Comprehensive vulnerability assessment and hardening of mission-critical software against injection, authentication, and logic flaws.</div></div>
+    <div class="cc"><span class="cc-ico">☁️</span><div class="cc-title">Cloud Security</div><div class="cc-text">Securing cloud-native infrastructure, containerized workloads, and hybrid deployments with continuous posture management.</div></div>
+    <div class="cc"><span class="cc-ico">🔑</span><div class="cc-title">Identity &amp; Access</div><div class="cc-text">Zero-trust IAM systems ensuring least-privilege access to classified and sensitive operational data across all endpoints.</div></div>
+    <div class="cc"><span class="cc-ico">📡</span><div class="cc-title">IoT Security</div><div class="cc-text">Securing connected devices, sensors, and edge nodes across smart infrastructure, industrial control systems, and battlefield IoT.</div></div>
+    <div class="cc"><span class="cc-ico">🤖</span><div class="cc-title">AI Threat Monitoring</div><div class="cc-text">AI-powered detection with real-time risk scoring — continuously learning from attack patterns to stay ahead of emerging threats.</div></div>
+    <div class="cc"><span class="cc-ico">🗄️</span><div class="cc-title">Information Security</div><div class="cc-text">End-to-end data protection — personal records, financial data, classified defense intelligence — at rest and in transit.</div></div>
+    <div class="cc"><span class="cc-ico">♻️</span><div class="cc-title">Business Continuity</div><div class="cc-text">Resilience frameworks ensuring organizations maintain operations under ransomware, DDoS, and coordinated cyberattack scenarios.</div></div>
+  </div>
+  <div class="cyber-banner reveal d2">
+    <div>
+      <div class="cb-h">Real-Time Risk Analytics for <em style="color:var(--cyan);font-style:normal">Defense &amp; Critical Infrastructure</em></div>
+      <div class="cb-p">AI-powered monitoring systems providing continuous situational awareness — detecting, triaging, and neutralizing threats before they become incidents.</div>
+    </div>
+    <a href="#contact" class="btn-primary" style="white-space:nowrap">Request a Briefing <span class="arr">→</span></a>
+  </div>
+</section>
+
+<!-- ── DRONE TRAINING ─────────────── -->
+<section class="training" id="training">
+  <div class="reveal">
+    <div class="eyebrow">RPTO · Drone Training</div>
+    <h2 class="sh">DGCA-Certified <span class="sg">Pilot Training</span></h2>
+    <p class="slead">India's next generation of UAV operators trained at Rashtriya Raksha University — with simulation, field experience, and defense-grade curricula.</p>
+  </div>
+  <div class="training-wrap">
+    <div class="reveal d1">
+      <div class="prog">
+        <div class="prog-lvl">Level 01 · Foundation</div>
+        <div class="prog-title">Basic Drone Pilot Program</div>
+        <div class="prog-desc">Regulations, preflight procedures, basic flight maneuvers, and emergency handling. Prepares pilots for DGCA Small UAS certification with simulator and open-field practical hours.</div>
+      </div>
+      <div class="prog">
+        <div class="prog-lvl">Level 02 · Professional</div>
+        <div class="prog-title">Advanced Drone Operations</div>
+        <div class="prog-desc">Complex airspace, payload management, night flying, swarm coordination, and mission planning for industrial and agricultural deployments. Intensive field training included.</div>
+      </div>
+      <div class="prog">
+        <div class="prog-lvl">Level 03 · Specialized</div>
+        <div class="prog-title">Defense &amp; Industrial Curriculum</div>
+        <div class="prog-desc">Defense-specific training covering surveillance missions, border patrol simulation, logistics delivery, and agricultural precision spraying for government and industrial roles.</div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="t-stats">
+        <div class="tstat"><div class="tstat-num">3</div><div class="tstat-lbl">Program Tracks</div></div>
+        <div class="tstat"><div class="tstat-num">DGCA</div><div class="tstat-lbl">Certification Assured</div></div>
+        <div class="tstat"><div class="tstat-num">RRU</div><div class="tstat-lbl">Partner Institution</div></div>
+        <div class="tstat"><div class="tstat-num">360°</div><div class="tstat-lbl">Sim + Field Training</div></div>
+      </div>
+      <div class="cert-block">
+        <div class="cert-seal">🏛️</div>
+        <div>
+          <h4>Rashtriya Raksha University Partner</h4>
+          <p>All programs conducted at RRU campus — India's premier national security university — ensuring world-class infrastructure, instructors, and certification credibility.</p>
+        </div>
+      </div>
+      <div class="curricula">
+        <div class="curr-h">Specialized Curricula Available</div>
+        <div class="curr-list">
+          <div class="curr-item">Agricultural Precision Spraying &amp; Crop Monitoring</div>
+          <div class="curr-item">Industrial Inspection (Infrastructure, Energy, Mining)</div>
+          <div class="curr-item">Defense Surveillance &amp; Border Patrol Operations</div>
+          <div class="curr-item">Search &amp; Rescue and Disaster Response UAV Ops</div>
+          <div class="curr-item">Logistics Delivery in Complex Urban Environments</div>
+          <div class="curr-item">Simulation-Based Emergency Procedure Drills</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────── -->
+<section class="contact" id="contact">
+  <div class="reveal">
+    <div class="eyebrow">Contact</div>
+    <h2 class="sh">Let's <em>Build</em> Together</h2>
+    <p class="slead">Defense agencies, enterprise partners, or investors — we'd like to hear from you.</p>
+  </div>
+  <div class="contact-wrap">
+    <div class="reveal d1">
+      <div class="ci-block">
+        <div class="ci-ico">📍</div>
+        <div><div class="ci-lbl">Headquarters</div><div class="ci-val">D-4 LSC, A Block, Naraina Vihar<br>New Delhi – 110028, India</div></div>
+      </div>
+      <div class="ci-block">
+        <div class="ci-ico">📞</div>
+        <div><div class="ci-lbl">Phone</div><div class="ci-val"><a href="tel:+9101145055600">+91 011-4505 5600</a></div></div>
+      </div>
+      <div class="ci-block">
+        <div class="ci-ico">✉️</div>
+        <div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:contact@gkdtech.co.in">contact@gkdtech.co.in</a></div></div>
+      </div>
+      <div class="ci-block">
+        <div class="ci-ico">🌐</div>
+        <div><div class="ci-lbl">Website</div><div class="ci-val"><a href="https://gkdtech.co.in" target="_blank">gkdtech.co.in</a></div></div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="form-row">
+        <div class="ff"><label class="fl">Full Name</label><input class="fi" type="text" placeholder="Your name"/></div>
+        <div class="ff"><label class="fl">Organization</label><input class="fi" type="text" placeholder="Company / Agency"/></div>
+      </div>
+      <div class="form-row">
+        <div class="ff"><label class="fl">Email Address</label><input class="fi" type="email" placeholder="you@organization.com"/></div>
+        <div class="ff"><label class="fl">Phone</label><input class="fi" type="tel" placeholder="+91 XXXXX XXXXX"/></div>
+      </div>
+      <div class="ff">
+        <label class="fl">Area of Interest</label>
+        <select class="fs">
+          <option value="">Select a domain...</option>
+          <option>Drone / UAV Solutions — Homeland Aero</option>
+          <option>FxUAV Pilot Verification Module</option>
+          <option>Drone Pilot Training (RPTO / DGCA)</option>
+          <option>Cybersecurity Solutions</option>
+          <option>AR/VR Defense Training — Tactix</option>
+          <option>AI &amp; Intelligence Platform — SAMVAD</option>
+          <option>Wireless Connectivity — Tactilink</option>
+          <option>Investment / Strategic Partnership</option>
+        </select>
+      </div>
+      <div class="ff"><label class="fl">Message</label><textarea class="ft" placeholder="Tell us about your requirement or opportunity..."></textarea></div>
+      <button class="btn-primary" style="width:100%;justify-content:center;border:none">Send Message <span class="arr">→</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="nav-brand">
+        <div class="nav-hex" style="width:36px;height:36px;font-size:10px">GKD</div>
+        <div class="nav-name">GKD <b>TECH</b> LLP</div>
+      </div>
+      <p class="fbrand-p">A deep-tech incubator enabling next-generation technology across Cybersecurity, Aerospace, Immersive Systems, and AI-driven intelligence. Building a safer, smarter India.</p>
+    </div>
+    <div>
+      <div class="fcol-h">Ventures</div>
+      <ul class="flinks">
+        <li><a href="#ecosystem">Homeland Aero</a></li>
+        <li><a href="#ecosystem">Tactix Technologies</a></li>
+        <li><a href="#ecosystem">SAMVAD</a></li>
+        <li><a href="#ecosystem">Tactilink Systems</a></li>
+        <li><a href="#fxuav">FX UAV</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fcol-h">Services</div>
+      <ul class="flinks">
+        <li><a href="#cybersec">Cybersecurity</a></li>
+        <li><a href="#training">Drone Training</a></li>
+        <li><a href="#fxuav">FxUAV Module</a></li>
+        <li><a href="#ecosystem">UAV Systems</a></li>
+        <li><a href="#ecosystem">AI Intelligence</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fcol-h">Company</div>
+      <ul class="flinks">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-btm">
+    <div class="fcopy">© 2025 <span>GKD Tech LLP</span> · Naraina Vihar, New Delhi · All rights reserved</div>
+    <div class="fcopy"><span>contact@gkdtech.co.in</span> · +91 011-4505 5600</div>
+  </div>
+</footer>
+
+<script>
+// NAV SCROLL
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+
+// SCROLL REVEAL
+const revEls = document.querySelectorAll('.reveal');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('up');revObs.unobserve(e.target)} });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revEls.forEach(el => revObs.observe(el));
+
+// NAV ACTIVE
+const secEls = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secEls.forEach(s => { if(scrollY >= s.offsetTop - 130) cur = s.id });
+  navAs.forEach(a => { a.style.color = a.getAttribute('href') === '#'+cur ? 'var(--cyan)' : '' });
+});
+
+// AMBIENT CANVAS — particles + connecting lines
+(function(){
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let W, H, pts = [];
+  function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  class P {
+    constructor(){ this.reset(true); }
+    reset(init){
+      this.x = Math.random()*W; this.y = init ? Math.random()*H : -10;
+      this.vx = (Math.random()-.5)*.35; this.vy = (Math.random()-.5)*.35;
+      this.r = Math.random()*1.4+.3;
+      this.op = Math.random()*.55+.12;
+      this.color = Math.random()>.82 ? '#ffb800' : '#00e5ff';
+      this.life = 0; this.max = Math.random()*600+200;
+    }
+    step(){
+      this.x += this.vx; this.y += this.vy; this.life++;
+      if(this.x<0||this.x>W||this.y<0||this.y>H||this.life>this.max) this.reset(false);
+    }
+    draw(){
+      ctx.save();
+      ctx.globalAlpha = this.op*(1-this.life/this.max);
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 7; ctx.shadowColor = this.color;
+      ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+  }
+  for(let i=0;i<130;i++) pts.push(new P());
+  function lines(){
+    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<75){ ctx.save(); ctx.globalAlpha=(1-d/75)*.055; ctx.strokeStyle='#00e5ff'; ctx.lineWidth=.5; ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke(); ctx.restore(); }
+    }
+  }
+  function loop(){ ctx.clearRect(0,0,W,H); lines(); pts.forEach(p=>{p.step();p.draw()}); requestAnimationFrame(loop); }
+  loop();
+})();
+</script>
+</body>
+</html>
